@@ -18,3 +18,4 @@ set foldnestmax=10
 set foldmethod=indent
 set shiftwidth=4
 execute pathogen#infect()
+autocmd FileType python map <buffer> <F3> :call Flake8()<CR>
