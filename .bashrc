@@ -5,9 +5,6 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-# Source kube-ps1.sh for displaying the context of k8s
-source ~/kube-ps1.sh
-
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
@@ -56,19 +53,21 @@ nl=$'\n'
 
 function parse_git_branch() 
 {
-        # Get git context
-        CONTEXT=$(git branch --no-color 2>/dev/null | grep '^*' | colrm 1 2)
+        # Get the git context
+        PS1_GIT=""
+        CONTEXT="$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(git: \1)/')"
         if [ -n "${CONTEXT}" ]; then
-                echo "(git: ${CONTEXT})\n"
+                PS1_GIT="${CONTEXT}\n"
         fi
 }
 
 function kube_ps1()
 {
         # Get current context
-        CONTEXT=$(cat ~/.kube/config | grep "current-context:" | sed "s/current-context: //")
+        CONTEXT=$(cat ~/.kube/config 2>/dev/null | grep "current-context:" | sed "s/current-context: //")
+        PS1_KUBE=""
         if [ -n "${CONTEXT}" ]; then
-                echo "(k8s: ${CONTEXT})\n"
+                PS1_KUBE="(k8s: ${CONTEXT})\n"
         fi
 }
 
@@ -76,16 +75,25 @@ function terraform_workspace()
 {
         # Check if terraform folder exists where we are
         CURRENT=$(pwd)
+        PS1_TFM=""
         if [[ -d "${CURRENT}/.terraform" ]]
         then
-                CONTEXT=$(cat ./.terraform/terraform.tfstate | jq '.backend.config.workspaces.name' | sed 's/"//g')
-                echo "(tfm: ${CONTEXT})\n"
+                CONTEXT=$(cat ${CURRENT}/.terraform/terraform.tfstate 2>/dev/null | jq '.backend.config.workspaces.name' | sed 's/"//g')
+                PS1_TFM="(tfm: ${CONTEXT})\n"
         fi
 }
 
+function prepare_prompt()
+{
+        parse_git_branch
+        kube_ps1
+        terraform_workspace
 
-PS1="${GREEN}$(parse_git_branch)$(terraform_workspace)$(kube_ps1)${BLUE}\h:\W \$ ${NORMAL}"
-export PS1
+        PS1_PROMPT="${PS1_GIT}${PS1_TFM}${PS1_KUBE}"
+        echo -e "${PS1_PROMPT}"
+}
+
+
 source <(kubectl completion bash)
 alias k=kubectl
 complete -F __start_kubectl k
@@ -93,3 +101,6 @@ complete -F __start_kubectl k
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 complete -C /usr/local/bin/vault vault
+
+export PS1="${GREEN}\$(prepare_prompt)\n${BLUE}\h:\W \$ ${NORMAL}"
+
