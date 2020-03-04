@@ -14,7 +14,6 @@ set foldenable
 set foldlevelstart=10
 set foldnestmax=10
 set foldmethod=indent
-execute pathogen#infect()
 autocmd FileType python map <buffer> <F3> :call Flake8()<CR>
 
 " TextEdit might fail if hidden is not set.
@@ -157,3 +156,15 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" Plugin Installation via Plug
+call plug#begin('~/.vim/plugged')
+
+" List of Plugins to install
+Plug 'nvie/vim-flake8'
+Plug 'andrewstuart/vim-kubernetes'
+Plug 'hashivim/vim-terraform'
+Plug 'stephpy/vim-yaml'
+Plug 'sjl/badwolf'
+
+call plug#end()
