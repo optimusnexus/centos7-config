@@ -102,5 +102,5 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 complete -C /usr/local/bin/vault vault
 
-export PS1="${GREEN}\$(prepare_prompt)\n${BLUE}\h:\W \$ ${NORMAL}"
+export PS1="${YELLOW}\n=========================\n${BLUE}(host: \h)\n(path: \w)\n${GREEN}\$(prepare_prompt)\n--> ${NORMAL}"
 
