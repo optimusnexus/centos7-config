@@ -52,12 +52,14 @@ NORMAL="\[\033[00m\]"
 BLUE="\[\033[01;34m\]"
 YELLOW="\[\e[1;33m\]"
 GREEN="\[\e[1;32m\]"
+nl=$'\n'
 
-function parse_git_branch {
-        CONTEXT=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1 /')
-
-        if [ -n "$CONTEXT" ]; then
-                echo "(git: ${CONTEXT})"
+function parse_git_branch() 
+{
+        # Get git context
+        CONTEXT=$(git branch --no-color 2>/dev/null | grep '^*' | colrm 1 2)
+        if [ -n "${CONTEXT}" ]; then
+                echo "(git: ${CONTEXT})\n"
         fi
 }
 
@@ -65,13 +67,24 @@ function kube_ps1()
 {
         # Get current context
         CONTEXT=$(cat ~/.kube/config | grep "current-context:" | sed "s/current-context: //")
-
-        if [ -n "$CONTEXT" ]; then
-                echo "(k8s: ${CONTEXT}) \n"
+        if [ -n "${CONTEXT}" ]; then
+                echo "(k8s: ${CONTEXT})\n"
         fi
 }
 
-PS1="${GREEN}\$(parse_git_branch)$(kube_ps1)${BLUE}\h:\W \$ ${NORMAL}"
+function terraform_workspace() 
+{
+        # Check if terraform folder exists where we are
+        CURRENT=$(pwd)
+        if [[ -d "${CURRENT}/.terraform" ]]
+        then
+                CONTEXT=$(cat ./.terraform/terraform.tfstate | jq '.backend.config.workspaces.name' | sed 's/"//g')
+                echo "(tfm: ${CONTEXT})\n"
+        fi
+}
+
+
+PS1="${GREEN}$(parse_git_branch)$(terraform_workspace)$(kube_ps1)${BLUE}\h:\W \$ ${NORMAL}"
 export PS1
 source <(kubectl completion bash)
 alias k=kubectl
