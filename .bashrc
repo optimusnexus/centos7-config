@@ -46,9 +46,12 @@ alias gss='git stash save'
 
 # Prompt
 NORMAL="\[\033[00m\]"
-BLUE="\[\033[01;34m\]"
+BLUE="\[\033[00;34m\]"
+BOLD_BLUE="\[\033[01;34m\]"
+BOLD_YELLOW="\[\033[01;33m\]"
 YELLOW="\[\e[1;33m\]"
-GREEN="\[\e[1;32m\]"
+BOLD_GREEN="\[\e[1;32m\]"
+GREEN="\[\e[0;32m\]"
 nl=$'\n'
 
 function parse_git_branch() 
@@ -102,5 +105,4 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 complete -C /usr/local/bin/vault vault
 
-export PS1="${YELLOW}\n=========================\n${BLUE}(host: \h)\n(path: \w)\n${GREEN}\$(prepare_prompt)\n--> ${NORMAL}"
-
+export PS1="${BOLD_YELLOW}\n==> \d \t <==\n${BLUE}(host: \h)\n(path: \w)\n${GREEN}\$(prepare_prompt)\n--> ${NORMAL}"
