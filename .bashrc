@@ -42,6 +42,9 @@ alias grc='git rebase --continue'
 alias grs='git rebase --skip'
 alias gsl='git stash list'
 alias gss='git stash save'
+alias k=kubectl
+alias kns=kubens
+alias kctx=kubectx
 
 
 # Prompt
@@ -137,7 +140,6 @@ function gits() {
 }
 
 source <(kubectl completion bash)
-alias k=kubectl
 complete -F __start_kubectl k
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
