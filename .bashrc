@@ -58,27 +58,22 @@ function parse_git_branch()
 {
         # Get the git context
         PS1_GIT=""
-        CONTEXT="$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')"
+        CONTEXT=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\(\1\)/')
         if [ -n "${CONTEXT}" ]; then
+                CONTEXT='['$(basename `git rev-parse --show-toplevel`)'] '${CONTEXT}
                 gits
-                git_status=' - Add='${ac}' Mod='${mc}' Unt='${uc}' Ign='${ic}' Conflicts='${cc}
-                PS1_GIT='(git: '${CONTEXT}${git_status}')\n'
-#                git_status=''
-#        
-#                git_status+=${git_status}' A='${ac}' '
-#                git_status+=${git_status}' M='${mc}' '
-#                git_status="${git_status} D=${dc} "
-#                git_status="${git_status} U=${uc} "
-#                git_status="${git_status} I=${ic} "
-#                git_status="${git_status} CONF=${cc} "
-#               
-#                if [[ "${git_status}" -eq "" ]]; then
-#                        PS1_GIT+='(git: '${PS1_GIT}
-#                else
-#                        PS1_GIT+='(git: '${PS1_GIT}' - '${git_status}
-#                fi
-#
-#                PS1_GIT+='\n'
+                git_status=''
+                if [[ "${ac}" != "0" ]]; then git_status+=' Add='${ac}; fi
+                if [[ "${mc}" != "0" ]]; then git_status+=' Mod='${mc}; fi
+                if [[ "${dc}" != "0" ]]; then git_status+=' Del='${dc}; fi
+                if [[ "${uc}" != "0" ]]; then git_status+=' Unt='${uc}; fi
+                if [[ "${cc}" != "0" ]]; then git_status+=' Ign='${cc}; fi
+                if [[ "${ic}" != "0" ]]; then git_status+=' Conflicts='${ic}; fi
+
+                PS1_GIT='(git: '${CONTEXT}
+                if [[ "${git_status}" != "" ]]; then PS1_GIT+=' -'${git_status}; fi
+
+                PS1_GIT+=')\n'
         fi
 }
 
