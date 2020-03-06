@@ -58,9 +58,27 @@ function parse_git_branch()
 {
         # Get the git context
         PS1_GIT=""
-        CONTEXT="$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(git: \1)/')"
+        CONTEXT="$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')"
         if [ -n "${CONTEXT}" ]; then
-                PS1_GIT="${CONTEXT}\n"
+                gits
+                git_status=' - Add='${ac}' Mod='${mc}' Unt='${uc}' Ign='${ic}' Conflicts='${cc}
+                PS1_GIT='(git: '${CONTEXT}${git_status}')\n'
+#                git_status=''
+#        
+#                git_status+=${git_status}' A='${ac}' '
+#                git_status+=${git_status}' M='${mc}' '
+#                git_status="${git_status} D=${dc} "
+#                git_status="${git_status} U=${uc} "
+#                git_status="${git_status} I=${ic} "
+#                git_status="${git_status} CONF=${cc} "
+#               
+#                if [[ "${git_status}" -eq "" ]]; then
+#                        PS1_GIT+='(git: '${PS1_GIT}
+#                else
+#                        PS1_GIT+='(git: '${PS1_GIT}' - '${git_status}
+#                fi
+#
+#                PS1_GIT+='\n'
         fi
 }
 
@@ -92,10 +110,35 @@ function prepare_prompt()
         kube_ps1
         terraform_workspace
 
-        PS1_PROMPT="${PS1_GIT}${PS1_TFM}${PS1_KUBE}"
+        PS1_PROMPT=${PS1_GIT}${PS1_TFM}${PS1_KUBE}
         echo -e "${PS1_PROMPT}"
 }
 
+function gits() {
+        ac=0 mc=0 dc=0 uc=0 ic=0 cc=0
+        local line status
+        while read -r line; do
+                [ "$line" ] || continue
+                status=${line:0:2}
+                path=${line:3}
+                case "$status" in
+                        "M ") ((mc++)) ;;
+                        "D ") ((dc++)) ;;
+                        "??") ((uc++)) ;;
+                        "A ") ((ac++)) ;;
+                        "!!") ((ic++)) ;;
+                        "AA") ((cc++)) ;;
+                        "AU") ((cc++)) ;;
+                        "DD") ((cc++)) ;;
+                        "DU") ((cc++)) ;;
+                        "UD") ((cc++)) ;;
+                        "UU") ((cc++)) ;;
+                        "UA") ((cc++)) ;;
+                        "DD") ((cc++)) ;;
+                        *) echo unsupported status on line: $line
+                esac
+        done <<< "$(git status -s)"
+}
 
 source <(kubectl completion bash)
 alias k=kubectl
