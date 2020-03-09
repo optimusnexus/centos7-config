@@ -165,5 +165,5 @@ Plug 'nvie/vim-flake8'
 Plug 'andrewstuart/vim-kubernetes'
 Plug 'hashivim/vim-terraform'
 Plug 'stephpy/vim-yaml'
-
+Plug 'b4b4r07/vim-hcl'
 call plug#end()
