@@ -3,9 +3,17 @@
 kubectl_version="1.18.0"
 kubens_version="0.9.0"
 kubectx_version="0.9.0"
+terraform_version="0.12.24"
+vault_version=""
+consul_version=""
+
+remove_apps="docker docker-engine docker.io"
+app_list="tmux git hub jq tmux vim wget curl nodejs npm unzip docker.io"
+
+# remove apps
+sudo apt-get remove -y ${remove_apps}
 
 # install apps
-app_list="tmux git hub jq tmux vim wget curl nodejs npm"
 ssh_keys="dle_rsa"
 
 sudo apt-get install -y ${app_list}
@@ -62,6 +70,12 @@ tar zxvf kubens_v${kubens_version}_linux_x86_64.tar.gz
 sudo mv kubens /usr/local/bin/
 rm kubens_v${kubens_version}_linux_x86_64.tar.gz
 
+# setup terraform
+curl -LO https://releases.hashicorp.com/terraform/0.12.24/terraform_${terraform_version}_linux_amd64.zip
+unzip terraform_${terraform_version}_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+rm terraform_${terraform_version}_linux_amd64.zip
+
 # Install AWS cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -69,3 +83,8 @@ sudo ./aws/install
 rm -rf awscliv2.zip aws/
 
 rm LICENSE
+
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo groupadd docker
+sudo usermod -aG docker $USER
