@@ -167,6 +167,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'stephpy/vim-yaml'
 Plug 'b4b4r07/vim-hcl'
 Plug 'romainl/vim-dichromatic'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 colorscheme dichromatic
 

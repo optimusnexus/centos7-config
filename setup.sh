@@ -1,23 +1,23 @@
 #!/bin/bash
 
+kubectl_version="1.18.0"
+kubens_version="0.9.0"
+kubectx_version="0.9.0"
+
 # install apps
-app_list = "tmux git jq tmux vim wget curl"
+app_list="tmux git hub jq tmux vim wget curl nodejs npm"
 ssh_keys="dle_rsa"
 
 sudo apt-get install -y ${app_list}
 
 # Check for the current user in sudoers group
 
-# Copy ssh key
-cp dle ~/.ssh/
-sudo chmod 600 ~/.ssh/dle_rsa
-
 # Copy profile files over to the home folder
-files = ".tmux.conf .bashrc .git kube-ps1.sh .vimrc"
+files=".tmux.conf .bashrc .git kube-ps1.sh .vimrc"
 
 for f in files
 do
-  cp $f ~/
+  cp ./$f ~/
 done
 
 
@@ -29,6 +29,13 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 echo "Installing Vim Plugins..."
 vim +'PlugInstall --sync' +qa
 
+# Coc-Vim extensions
+echo "Installing Coc Extensions"
+mkdir -p ~/.config/coc/extensions
+cp package.json ~/.config/coc/extensions/
+
+vim +'CocInstall' +qa
+
 # Copy private ssh keys
 echo "Copying Private Keys"
 for f in ${ssh_keys}
@@ -36,3 +43,25 @@ do
   cp ${f} ~/.ssh/
   sudo chmod 600 ~/.ssh/${f}
 done
+
+# setup kubectl
+echo "Setting up kubectl"
+curl -LO https://storage.googleapis.com/kubernetes-release/release/vi${kubectl_version}/bin/linux/amd64/kubectl
+sudo mv kubectl /usr/local/bin/
+
+# setup kubectx
+curl -LO https://github.com/ahmetb/kubectx/releases/download/v${kubectx_version}/kubectx_v${kubectx_version}_linux_x86_64.tar.gz
+tar zxvf kubectx_v${kubectx_version}_linux_x86_64.tar.gz
+sudo mv kubectx /usr/local/bin/
+
+
+# setup kubens
+curl -LO https://github.com/ahmetb/kubectx/releases/download/v${kubens_version}/kubens_v${kubens_version}_linux_x86_64.tar.gz
+tar zxvf kubens_v${kubens_version}_linux_x86_64.tar.gz
+sudo mv kubens /usr/local/bin/
+
+# Install AWS cli
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rf awscliv2.zip aws/
