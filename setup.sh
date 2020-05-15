@@ -13,11 +13,12 @@ sudo apt-get install -y ${app_list}
 # Check for the current user in sudoers group
 
 # Copy profile files over to the home folder
-files=".tmux.conf .bashrc .git kube-ps1.sh .vimrc"
+files=".tmux.conf .bashrc .gitconfig .vimrc"
 
-for f in files
+for f in ${files}
 do
-  cp ./$f ~/
+  echo "Copying ${f} to home directory..."
+  cp ./${f} ~/
 done
 
 
@@ -53,15 +54,18 @@ sudo mv kubectl /usr/local/bin/
 curl -LO https://github.com/ahmetb/kubectx/releases/download/v${kubectx_version}/kubectx_v${kubectx_version}_linux_x86_64.tar.gz
 tar zxvf kubectx_v${kubectx_version}_linux_x86_64.tar.gz
 sudo mv kubectx /usr/local/bin/
-
+rm kubectx_v${kubectx_version}_linux_x86_64.tar.gz
 
 # setup kubens
 curl -LO https://github.com/ahmetb/kubectx/releases/download/v${kubens_version}/kubens_v${kubens_version}_linux_x86_64.tar.gz
 tar zxvf kubens_v${kubens_version}_linux_x86_64.tar.gz
 sudo mv kubens /usr/local/bin/
+rm kubens_v${kubens_version}_linux_x86_64.tar.gz
 
 # Install AWS cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 rm -rf awscliv2.zip aws/
+
+rm LICENSE
