@@ -146,3 +146,7 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 complete -C /usr/local/bin/vault vault
 
 export PS1="${BOLD_YELLOW}\n==> \d \t <==\n${BLUE}(host: \h)\n${GREEN}\$(prepare_prompt)\n${NORMAL}[\w] --> ${NORMAL}"
+
+
+#kubectx and kubens
+export PATH=~/.kubectx:$PATH

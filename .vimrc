@@ -1,4 +1,3 @@
-colorscheme badwolf
 syntax enable
 set expandtab
 set number
@@ -15,6 +14,7 @@ set foldlevelstart=10
 set foldnestmax=10
 set foldmethod=indent
 autocmd FileType python map <buffer> <F3> :call Flake8()<CR>
+set tabstop=2 shiftwidth=2 expandtab smarttab softtabstop=0
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -166,4 +166,7 @@ Plug 'andrewstuart/vim-kubernetes'
 Plug 'hashivim/vim-terraform'
 Plug 'stephpy/vim-yaml'
 Plug 'b4b4r07/vim-hcl'
+Plug 'romainl/vim-dichromatic'
 call plug#end()
+colorscheme dichromatic
+
