@@ -4,6 +4,8 @@
 app_list = "tmux git jq tmux vim wget curl"
 ssh_keys="dle_rsa"
 
+sudo apt-get install -y ${app_list}
+
 # Check for the current user in sudoers group
 
 # Copy ssh key
