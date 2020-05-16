@@ -9,49 +9,22 @@ consul_version=""
 
 remove_apps="docker docker-engine docker.io"
 app_list="tmux git hub jq tmux vim wget curl nodejs npm unzip docker.io"
-
-# remove apps
-sudo apt-get remove -y ${remove_apps}
-
-# install apps
-ssh_keys="dle_rsa"
-
-sudo apt-get install -y ${app_list}
+files=".tmux.conf .bashrc .gitconfig .vimrc"
+ssh_keys="dle_rsa dle_rsa.pub dle-key.pem"
 
 # Check for the current user in sudoers group
+if [[ "$( grep -E "^${USER}" )" == "" ]]
+then 
+  echo "Adding [${USER}] to list of susoders..."
+  sudo echo "${USER}\t ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+  echo "Done."
+fi
 
-# Copy profile files over to the home folder
-files=".tmux.conf .bashrc .gitconfig .vimrc"
+# remove apps
+sudo apt remove -y ${remove_apps}
 
-for f in ${files}
-do
-  echo "Copying ${f} to home directory..."
-  cp ./${f} ~/
-done
-
-
-echo "Installing vim-plug"
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-# Install Vim Plugins
-echo "Installing Vim Plugins..."
-vim +'PlugInstall --sync' +qa
-
-# Coc-Vim extensions
-echo "Installing Coc Extensions"
-mkdir -p ~/.config/coc/extensions
-cp package.json ~/.config/coc/extensions/
-
-vim +'CocInstall' +qa
-
-# Copy private ssh keys
-echo "Copying Private Keys"
-for f in ${ssh_keys}
-do
-  cp ${f} ~/.ssh/
-  sudo chmod 600 ~/.ssh/${f}
-done
+# install apps
+sudo apt install -y ${app_list}
 
 # setup kubectl
 echo "Setting up kubectl"
@@ -81,9 +54,39 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 sudo ./aws/install
 rm -rf awscliv2.zip aws/
-
 rm LICENSE
 
+# Copy profile files over to the home folder
+for f in ${files}
+do
+  echo "Copying ${f} to home directory..."
+  cp ./${f} ~/
+done
+
+echo "Installing vim-plug"
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# Install Vim Plugins
+echo "Installing Vim Plugins..."
+vim +'PlugInstall --sync' +qa
+
+# Coc-Vim extensions
+echo "Installing Coc Extensions"
+mkdir -p ~/.config/coc/extensions
+cp package.json ~/.config/coc/extensions/
+
+vim +'CocInstall' +qa
+
+# Copy private ssh keys
+echo "Copying Private Keys"
+for f in ${ssh_keys}
+do
+  cp ${f} ~/.ssh/
+  sudo chmod 600 ~/.ssh/${f}
+done
+
+echo "Final Setup..."
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo groupadd docker
