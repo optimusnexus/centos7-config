@@ -11,14 +11,7 @@ remove_apps="docker docker-engine docker.io"
 app_list="tmux git hub jq tmux vim wget curl nodejs npm unzip docker.io"
 files=".tmux.conf .bashrc .gitconfig .vimrc"
 ssh_keys="dle_rsa dle_rsa.pub dle-key.pem"
-
-# Check for the current user in sudoers group
-if [[ "$( grep -E "^${USER}" )" == "" ]]
-then 
-  echo "Adding [${USER}] to list of susoders..."
-  sudo echo "${USER}\t ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-  echo "Done."
-fi
+coc_extension="clangd docker highlight html json python snippets xml yaml"
 
 # remove apps
 sudo apt remove -y ${remove_apps}
@@ -73,10 +66,15 @@ vim +'PlugInstall --sync' +qa
 
 # Coc-Vim extensions
 echo "Installing Coc Extensions"
-mkdir -p ~/.config/coc/extensions
-cp package.json ~/.config/coc/extensions/
 
-vim +'CocInstall' +qa
+mkdir -p ~/.config/coc/extensions
+orig_path=$( pwd )
+cd ~/.config/coc/extensions
+echo '{"dependencies":{}}'> package.json
+for f in coc_extension
+do
+  npm install coc-${f} --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
+done
 
 # Copy private ssh keys
 echo "Copying Private Keys"
