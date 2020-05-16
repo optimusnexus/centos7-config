@@ -71,10 +71,11 @@ mkdir -p ~/.config/coc/extensions
 orig_path=$( pwd )
 cd ~/.config/coc/extensions
 echo '{"dependencies":{}}'> package.json
-for f in coc_extension
+for f in ${coc_extension}
 do
   npm install coc-${f} --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
 done
+cd ${orig_path}
 
 # Copy private ssh keys
 echo "Copying Private Keys"
