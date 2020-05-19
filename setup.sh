@@ -21,7 +21,7 @@ sudo apt install -y ${app_list}
 
 # setup kubectl
 echo "Setting up kubectl"
-curl -LO https://storage.googleapis.com/kubernetes-release/release/vi${kubectl_version}/bin/linux/amd64/kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl
 sudo mv kubectl /usr/local/bin/
 
 # setup kubectx
