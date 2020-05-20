@@ -28,23 +28,27 @@ sudo apt install -y ${app_list}
 # setup kubectl
 echo "Setting up kubectl"
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl
+sudo chmod 777 kubectl
 sudo mv kubectl /usr/local/bin/
 
 # setup kubectx
 curl -LO https://github.com/ahmetb/kubectx/releases/download/v${kubectx_version}/kubectx_v${kubectx_version}_linux_x86_64.tar.gz
 tar zxvf kubectx_v${kubectx_version}_linux_x86_64.tar.gz
+sudo chmod 777 kubectx
 sudo mv kubectx /usr/local/bin/
 rm kubectx_v${kubectx_version}_linux_x86_64.tar.gz
 
 # setup kubens
 curl -LO https://github.com/ahmetb/kubectx/releases/download/v${kubens_version}/kubens_v${kubens_version}_linux_x86_64.tar.gz
 tar zxvf kubens_v${kubens_version}_linux_x86_64.tar.gz
+sudo chmod 777 kubens
 sudo mv kubens /usr/local/bin/
 rm kubens_v${kubens_version}_linux_x86_64.tar.gz
 
 # setup terraform
 curl -LO https://releases.hashicorp.com/terraform/0.12.24/terraform_${terraform_version}_linux_amd64.zip
 unzip terraform_${terraform_version}_linux_amd64.zip
+sudo chmod 777 terraform
 sudo mv terraform /usr/local/bin/
 rm terraform_${terraform_version}_linux_amd64.zip
 
