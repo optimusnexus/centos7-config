@@ -13,6 +13,12 @@ files=".tmux.conf .bashrc .gitconfig .vimrc"
 ssh_keys="dle_rsa dle_rsa.pub dle-key.pem"
 coc_extension="clangd docker highlight html json python snippets xml yaml"
 
+# upgrade system
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt autoremove -y
+
+
 # remove apps
 sudo apt remove -y ${remove_apps}
 
