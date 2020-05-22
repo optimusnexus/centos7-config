@@ -25,6 +25,8 @@ sudo apt remove -y ${remove_apps}
 # install apps
 sudo apt install -y ${app_list}
 
+COMPDIR=$(pkg-config --variable=completionsdir bash-completion)
+
 # setup kubectl
 echo "Setting up kubectl"
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl
@@ -37,6 +39,8 @@ tar zxvf kubectx_v${kubectx_version}_linux_x86_64.tar.gz
 sudo chmod 777 kubectx
 sudo mv kubectx /usr/local/bin/
 rm kubectx_v${kubectx_version}_linux_x86_64.tar.gz
+curl -LO https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.bash -o ${COMPDIR}/kctx
+curl -LO https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.bash -o ${COMPDIR}/kubectx
 
 # setup kubens
 curl -LO https://github.com/ahmetb/kubectx/releases/download/v${kubens_version}/kubens_v${kubens_version}_linux_x86_64.tar.gz
@@ -44,6 +48,8 @@ tar zxvf kubens_v${kubens_version}_linux_x86_64.tar.gz
 sudo chmod 777 kubens
 sudo mv kubens /usr/local/bin/
 rm kubens_v${kubens_version}_linux_x86_64.tar.gz
+curl -LO https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash -o ${COMPDIR}/kns
+curl -LO https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash -o ${COMPDIR}/kubens
 
 # setup terraform
 curl -LO https://releases.hashicorp.com/terraform/0.12.24/terraform_${terraform_version}_linux_amd64.zip
