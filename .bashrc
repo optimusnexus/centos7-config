@@ -138,8 +138,8 @@ YELLOW="\[\e[1;33m\]"
 BOLD_GREEN="\[\e[1;32m\]"
 GREEN="\[\e[0;32m\]"
 
-source < (helm completion bash)
-source < (kubectl completion bash)
+source <(helm completion bash)
+source <(kubectl completion bash)
 complete -F __start_kubectl k
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
