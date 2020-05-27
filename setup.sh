@@ -3,7 +3,7 @@
 kubectl_version="1.18.0"
 kubens_version="0.9.0"
 kubectx_version="0.9.0"
-terraform_version="0.12.24"
+terraform_version="0.12.25"
 vault_version=""
 consul_version=""
 
