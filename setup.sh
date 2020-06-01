@@ -52,7 +52,7 @@ curl -LO https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kube
 curl -LO https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash -o ${COMPDIR}/kubens
 
 # setup terraform
-curl -LO https://releases.hashicorp.com/terraform/0.12.24/terraform_${terraform_version}_linux_amd64.zip
+curl -LO https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip
 unzip terraform_${terraform_version}_linux_amd64.zip
 sudo chmod 777 terraform
 sudo mv terraform /usr/local/bin/
