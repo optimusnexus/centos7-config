@@ -238,7 +238,6 @@ function install_vim_plugins() {
 
 function setup_all(){
   copy_files
-  setup_install
   remove_apps
   update_system
   install_apps
@@ -250,5 +249,4 @@ function setup_all(){
   install_terraform
   install_circleci
   install_vim_plugins
-  cleanup_install
 }
