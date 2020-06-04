@@ -45,7 +45,10 @@ alias gss='git stash save'
 alias k=kubectl
 alias kns=kubens
 alias kctx=kubectx
-
+alias ggit='cd ~/git/'
+alias gdock='cd ~/docker/'
+alias gvault='cd ~/vault/'
+alias gtfmt='cd ~/terraform'
 
 # Prompt
 function parse_git_branch() 
