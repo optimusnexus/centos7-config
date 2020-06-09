@@ -15,7 +15,7 @@ files=".tmux.conf .bashrc .gitconfig .vimrc"
 ssh_keys="dle_rsa dle_rsa.pub dle-key.pem"
 coc_extension="clangd docker highlight html json python snippets xml yaml"
 install_path="/tmp/install/"
-create_folders="~/git/ ~/docker ~/vault ~/terraform"
+create_folders="~/git/ ~/docker ~/vault ~/terraform ~/helm"
 original_path=""
 
 function log () {

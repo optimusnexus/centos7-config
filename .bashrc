@@ -51,6 +51,7 @@ alias ggit='cd ~/git/'
 alias gdock='cd ~/docker/'
 alias gvault='cd ~/vault/'
 alias gtfmt='cd ~/terraform'
+alias ghelm='cd ~/helm'
 
 # Prompt
 function parse_git_branch() 
