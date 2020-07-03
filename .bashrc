@@ -80,10 +80,10 @@ function parse_git_branch()
 function kube_ps1()
 {
   # Get current context
-  CONTEXT='['$(cat ~/.kube/config 2>/dev/null | grep "current-context:" | sed "s/current-context: //")']'
+  CONTEXT='['$(kubectl config current-context)']'
   PS1_KUBE=""
   if [ -n "${CONTEXT}" ]; then
-    CONTEXT+=' ['$(cat ~/.kube/config 2>/dev/null | grep "namespace:" | sed "s/\s*namespace: //")']'
+    CONTEXT+=' ['$(kubectl config view --minify --output 'jsonpath={..namespace}')']'
     PS1_KUBE="{k8s: ${CONTEXT}}\n"
   fi
 }

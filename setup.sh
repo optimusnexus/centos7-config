@@ -89,8 +89,9 @@ function install_kubectx() {
   sudo chown root:root kubectx
   sudo mv kubectx /usr/local/bin/
   rm kubectx_v${kubectx_version}_linux_x86_64.tar.gz
-  curl -LOsS https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.bash -o ${COMPDIR}/kctx
-  curl -LOsS https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.bash -o ${COMPDIR}/kubectx
+  curl -LOsS https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.bash
+  sudo cp kubectx.bash ${COMPDIR}/kctx
+  sudo cp kubectx.bash ${COMPDIR}/kubectx
   log "Done."
   cleanup_install
 }
@@ -108,8 +109,9 @@ function install_kubens() {
   sudo chown root:root kubens
   sudo mv kubens /usr/local/bin/
   rm kubens_v${kubens_version}_linux_x86_64.tar.gz
-  curl -LOsS https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash -o ${COMPDIR}/kns
-  curl -LOsS https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash -o ${COMPDIR}/kubens
+  curl -LOsS https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash
+  sudo cp kubens.bash ${COMPDIR}/kns
+  sudo cp kubens.bash ${COMPDIR}/kubens
   log "Done."
   cleanup_install
 }
